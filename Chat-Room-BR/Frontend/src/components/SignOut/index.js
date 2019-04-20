@@ -1,11 +1,11 @@
 import React from 'react';
 
 import { withFirebase } from '../Firebase';
-
+//TODO not a button
 const SignOutButton = ({ firebase }) => (
-  <a type="button" onClick={firebase.doSignOut} href="http://localhost:3000/">
+  <button type="button" onClick={firebase.doSignOut}>
     Sign Out
-  </a>
+  </button>
 );
 
 export default withFirebase(SignOutButton);
