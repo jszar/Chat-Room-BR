@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import SideBar from './SideBar'
+import { COMMUNITY_CHAT, MESSAGE_SENT, MESSAGE_RECIEVED, TYPING } from '../../Events'
 
 export default class ChatContainer extends Component {
   constructor(props) {
@@ -13,11 +14,43 @@ export default class ChatContainer extends Component {
 
   componentDidMount() {
     const { socket } = this.props
+    socket.emit(COMMUNITY_CHAT, this.resetChat)
+  }
+
+  resetChat = (chat) => {
+    return this.addChat(chat, true)
+  }
+
+  addChat = (chat, reset) => {
+    const { socket } = this.props
+    const { chats } = this.state
+
+    const newChats = reset ? [chat] : [...chats, chat]
+    this.setState({chats:newChats})
+
+    const messageEvent = `${MESSAGE_RECIEVED}-${chat.id}`
+    const typingEvent = `${TYPING}-${chat.id}`
+
+    socket.on(typingEvent)
+    socket.on(messageEvent, this.addMessageToChat(chat.id))
+  }
+
+  addMessageToChat = (chatId) => {
+    return message => {
+      const { chats } = this.state
+      let newChats = chats.map((chat) => {
+        if (chat.id === chatId) {
+          chat.messages.push(message)
+        }
+        return chat
+      })
+      this.setState({chats:newChats})
+    }
   }
 
   sendMessage = (chatId, message) => {
     const { socket } = this.props
-    socket.emit(MESSAGE_SENT, {chatID, message})
+    socket.emit(MESSAGE_SENT, {chatId, message})
   }
 
   sendTyping = (chatId, isTyping) => {
