@@ -6,7 +6,7 @@ import { compose } from 'recompose';
 import * as ROUTES from '../../constants/routes';
 
 const INITIAL_STATE = {
-  username: '',
+  name: '',
   email: '',
   passwordOne: '',
   passwordTwo: '',
@@ -28,11 +28,19 @@ class SignUpFormBase extends Component {
   }
 
   onSubmit = event => {
-    const { username, email, passwordOne } = this.state;
+    const { name, email, passwordOne } = this.state;
 
     this.props.firebase
       .doCreateUserWithEmailAndPassword(email, passwordOne)
       .then(authUser => {
+        return this.props.firebase
+          .user(authUser.user.uid)
+          .set({
+            name,
+            email,
+          });
+      })
+      .then(() => {
         this.setState({ ...INITIAL_STATE });
         this.props.history.push(ROUTES.HOME);
       })
@@ -49,7 +57,7 @@ class SignUpFormBase extends Component {
 
  render() {
      const {
-       username,
+       name,
        email,
        passwordOne,
        passwordTwo,
@@ -60,13 +68,13 @@ class SignUpFormBase extends Component {
       passwordOne !== passwordTwo ||
       passwordOne === '' ||
       email === '' ||
-      username === '';
+      name === '';
 
      return (
        <form onSubmit={this.onSubmit}>
          <input
-           name="username"
-           value={username}
+           name="name"
+           value={name}
            onChange={this.onChange}
            type="text"
            placeholder="Full Name"
