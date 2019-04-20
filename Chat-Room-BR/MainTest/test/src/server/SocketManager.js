@@ -1,7 +1,7 @@
-const io = require('./index.js')
+const io = require('./index.js').io
 const { VERIFY_USER, USER_CONNECTED, LOGOUT } = require('../Events')
 const { createUser, createMessage, createChat } = require('../Factories')
-const connectedUsers = {} //setup like {{"user":{id:"ASDFASDFASDFASDF", name:"billy ray cyrus"}}}
+let connectedUsers = {} //setup like {{"user":{id:"ASDFASDFASDFASDF", name:"billy ray cyrus"}}}
 
 module.exports = function(socket){
   console.log("socket id" + socket.id)
@@ -13,11 +13,19 @@ module.exports = function(socket){
       callback({isUser:false, user:createUser({name:nickname})})
     }
   })
+
+  socket.on(USER_CONNECTED, (user) => {
+    connectedUsers = addUser(connectedUsers, user)
+    socket.user = user
+
+    io.emit(USER_CONNECTED, connectedUsers)
+    console.log(connectedUsers);
+  })
 }
 
-function addUser(userList, username) {
+function addUser(userList, user) {
   let newList = Object.assign({}, userList)
-  newlist[user.name] = user
+  newList[user.name] = user
   return newList
 }
 
