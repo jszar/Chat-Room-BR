@@ -4,7 +4,7 @@ import { USER_CONNECTED, LOGOUT } from '../Events'
 import LoginForm from './LoginForm'
 import ChatContainer from './chats/ChatContainer'
 
-const socketUrl = "http://10.186.126.125:3231/"
+const socketUrl = "http://10.186.115.197:3231/"
 export default class Layout extends Component {
   constructor(props) {
     super(props);
@@ -39,7 +39,6 @@ export default class Layout extends Component {
     this.setState({user:null})
   }
   render() {
-    const { title } = this.props
     const { socket, user } = this.state
     return (
       <div className="container">

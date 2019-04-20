@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import SideBar from './SideBar'
 import { COMMUNITY_CHAT, MESSAGE_SENT, MESSAGE_RECIEVED, TYPING } from '../../Events'
+import ChatHeading from './ChatHeading'
+import Messages from './Messages'
+import MessageInput from './MessageInput'
 
 export default class ChatContainer extends Component {
   constructor(props) {
@@ -8,7 +11,7 @@ export default class ChatContainer extends Component {
 
     this.state = {
       chats:[],
-      activeChat:null,
+      activeChat:null
     };
   }
 
@@ -72,8 +75,8 @@ export default class ChatContainer extends Component {
 					chats={chats}
 					user={user}
 					activeChat={activeChat}
-					setActiveChat={ (chat)=> this.setActiveChat(chat) }/>
-
+					setActiveChat={this.setActiveChat}
+          />
 				<div className="chat-room-container">
 					{
 						activeChat !== null ? (
