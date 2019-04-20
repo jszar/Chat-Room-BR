@@ -11,6 +11,7 @@ export default class LoginForm extends Component {
   }
 
   setUser = ({user, isUser}) => {
+    console.log(user, isUser)
     if (isUser) {
       this.setError("User name taken!! :(")
     } else {
@@ -47,7 +48,7 @@ export default class LoginForm extends Component {
 			          		type="text"
 			          		value={nickname}
 			          		onChange={this.handleChange}
-			          		placeHolder={'hi :)'}
+			          		placeholder={'hi :)'}
 			          		/>
 			          	<div className="error">{error ? error : ""}</div>
 				</form>
