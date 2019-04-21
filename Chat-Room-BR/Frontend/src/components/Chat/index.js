@@ -118,11 +118,20 @@ class ChatPage extends Component {
   //  this.state.players[this.state.players.length] = this.state.member;
     var cars = ["FillerNotUser"];
      var database = firebase.database();
-     firebase.database().ref('users/' + "GAMEROOMCHAT").set({
-     isGame: "true",
-     isOpen: "true",
-     players: players
-    });
+     if (players.length < 5) {
+       firebase.database().ref('users/' + "GAMEROOMCHAT").set({
+       isGame: "false",
+       isOpen: "true",
+       players: players
+      });
+    }
+    else {
+      firebase.database().ref('users/' + "GAMEROOMCHAT").set({
+      isGame: "true",
+      isOpen: "false",
+      players: players
+     });
+    }
   }
       if (true) {
         //if number of players >= 5 set isGame to true
