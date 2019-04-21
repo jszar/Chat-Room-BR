@@ -47,6 +47,7 @@ const INITIAL_STATE = {
   },
   serverdata: "",
   isGame: false,
+  loading: false,
 };
 var players = [];
 var index = 0;
@@ -87,15 +88,42 @@ class ChatPage extends Component {
       });
     });
   }
+  componentWillUnmount() {
+    this.props.firebase.user("GAMEROOMCHAT").off();
+  }
 
 
 
   render() {
+  //  if (!this.state) {
+    //}
+    var players = this.state;
+   players = this.state.serverdata.players;
+    console.log(players);
+    if (players){
+      var notExists = true;
+      var i;
+      for (i = 0; i < players.length; i++){
+        if (players[i] === this.state.member.username) {
+          notExists = false;
+        }
+      }
+
+      if (notExists) {
+        players[players.length] = this.state.member.username;
+      }
+      console.log("player " + players[0]);
+
+
+  //  this.state.players[this.state.players.length] = this.state.member;
+    var cars = ["FillerNotUser"];
      var database = firebase.database();
      firebase.database().ref('users/' + "GAMEROOMCHAT").set({
      isGame: "true",
-     isOpen: "true"
+     isOpen: "true",
+     players: players
     });
+  }
       if (true) {
         //if number of players >= 5 set isGame to true
       }
