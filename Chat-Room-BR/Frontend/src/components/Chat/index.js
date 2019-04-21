@@ -3,6 +3,8 @@ import './Roblox.css';
 import Messages from "./Messages";
 import Input from "./Input";
 import { withFirebase } from '../Firebase';
+import config from '../Firebase';
+import * as firebase from 'firebase';
 
 
 function randomName() {
@@ -46,12 +48,15 @@ const INITIAL_STATE = {
   serverdata: "",
   isGame: false,
 };
-
+var players = [];
+var index = 0;
 class ChatPage extends Component {
   constructor() {
     super();
     this.state = { ...INITIAL_STATE };
-
+    players[index] = this.state.member;
+    index++;
+    console.log(players);
     this.drone = new window.Scaledrone("09ce0IpIJ7oem4gE", {
       data: this.state.member
     });
@@ -86,8 +91,16 @@ class ChatPage extends Component {
 
 
   render() {
+     var database = firebase.database();
+     firebase.database().ref('users/' + "GAMEROOMCHAT").set({
+     isGame: "true",
+     isOpen: "true"
+    });
+      if (true) {
+        //if number of players >= 5 set isGame to true
+      }
       this.state.isGame = this.state.serverdata.isGame;
-      if (this.state.isGame){
+      if (this.state.isGame === "true"){
       return (
         <div className="App">
           <div className="App-header">

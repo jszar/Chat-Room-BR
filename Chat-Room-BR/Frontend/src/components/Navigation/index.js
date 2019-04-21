@@ -38,13 +38,13 @@ class NavigationAuth extends Component {
     });
   }
     render(){
-      console.log(authUser => authUser);
+    //  console.log(authUser => authUser);
       //todo add auth
       if (true) {
        //if (!this.state){
        this.state.isOpen = this.state.serverdata.isOpen;
      //}
-      if (this.state.isOpen) {
+      if (this.state.isOpen === "true") {
         return (
           <ul>
             <li>
