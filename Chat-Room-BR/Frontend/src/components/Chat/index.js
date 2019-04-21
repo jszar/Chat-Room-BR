@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import './Roblox.css';
 import Messages from "./Messages";
 import Input from "./Input";
+import { withFirebase } from '../Firebase';
+
 
 function randomName() {
   const adjectives = [
@@ -35,17 +37,21 @@ function randomColor() {
   return '#' + Math.floor(Math.random() * 0xFFFFFF).toString(16);
 }
 
-class ChatPage extends Component {
-  state = {
-    messages: [],
-    member: {
-      username: randomName(),
-      color: randomColor(),
-    }
-  }
+const INITIAL_STATE = {
+  messages: [],
+  member: {
+    username: randomName(),
+    color: randomColor(),
+  },
+  serverdata: "",
+  isGame: false,
+};
 
+class ChatPage extends Component {
   constructor() {
     super();
+    this.state = { ...INITIAL_STATE };
+
     this.drone = new window.Scaledrone("09ce0IpIJ7oem4gE", {
       data: this.state.member
     });
@@ -65,21 +71,45 @@ class ChatPage extends Component {
     });
   }
 
+  componentDidMount() {
+    this.setState({ loading: true });
+
+    this.props.firebase.user("GAMEROOMCHAT").on('value', snapshot => {
+      console.log(snapshot.val());
+      this.setState({
+        serverdata: snapshot.val(),
+        loading: false,
+      });
+    });
+  }
+
+
+
   render() {
-    return (
-      <div className="App">
-        <div className="App-header">
-          <h1>My Chat App</h1>
+      this.state.isGame = this.state.serverdata.isGame;
+      if (this.state.isGame){
+      return (
+        <div className="App">
+          <div className="App-header">
+            <h1>My Chat App</h1>
+          </div>
+          <Messages
+            messages={this.state.messages}
+            currentMember={this.state.member}
+          />
+          <Input
+            onSendMessage={this.onSendMessage}
+          />
         </div>
-        <Messages
-          messages={this.state.messages}
-          currentMember={this.state.member}
-        />
-        <Input
-          onSendMessage={this.onSendMessage}
-        />
-      </div>
-    );
+      );
+    }
+    else {
+      return(
+        <div>
+          <h1>Please for the game to start</h1>
+        </div>
+      )
+    }
   }
 
   onSendMessage = (message) => {
@@ -91,4 +121,4 @@ class ChatPage extends Component {
 
 }
 
-export default ChatPage;
+export default withFirebase(ChatPage);
