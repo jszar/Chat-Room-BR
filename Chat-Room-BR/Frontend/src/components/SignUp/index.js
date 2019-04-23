@@ -10,6 +10,7 @@ const INITIAL_STATE = {
   email: '',
   passwordOne: '',
   passwordTwo: '',
+  numWins: 0,
   error: null,
 };
 
@@ -38,6 +39,7 @@ class SignUpFormBase extends Component {
           .set({
             name,
             email,
+            numWins,
           });
       })
       .then(() => {
