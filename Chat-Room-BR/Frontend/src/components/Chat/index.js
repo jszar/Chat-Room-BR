@@ -32,7 +32,8 @@ function randomName() {
   ];
   const adjective = adjectives[Math.floor(Math.random() * adjectives.length)];
   const noun = nouns[Math.floor(Math.random() * nouns.length)];
-  return adjective + noun;
+
+  return adjective+noun;
 }
 
 function randomColor() {
@@ -42,12 +43,16 @@ function randomColor() {
 const INITIAL_STATE = {
   messages: [],
   member: {
-    username: randomName(),
+    username: null ,
     color: randomColor(),
   },
   serverdata: "",
   isGame: false,
   loading: false,
+  user: "",
+  userdata: "",
+  nullCheck: true,
+  hasAdded: "",
 };
 var players = [];
 var index = 0;
@@ -55,33 +60,40 @@ class ChatPage extends Component {
   constructor() {
     super();
     this.state = { ...INITIAL_STATE };
-    players[index] = this.state.member;
+
+
+    // this.state.member.username = user.name;
+
+
+    if (true) {
+      //console.log(this.state.member.username);
+    //players[index] = this.state.member;
     index++;
-    console.log(players);
-    this.drone = new window.Scaledrone("09ce0IpIJ7oem4gE", {
-      data: this.state.member
-    });
-    this.drone.on('open', error => {
-      if (error) {
-        return console.error(error);
-      }
-      const member = {...this.state.member};
-      member.id = this.drone.clientId;
-      this.setState({member});
-    });
-    const room = this.drone.subscribe("observable-room");
-    room.on('data', (data, member) => {
-      const messages = this.state.messages;
-      messages.push({member, text: data});
-      this.setState({messages});
-    });
+    // this.drone = new window.Scaledrone("09ce0IpIJ7oem4gE", {
+    //   data: this.state.member
+    // });
+    // this.drone.on('open', error => {
+    //   if (error) {
+    //     return console.error(error);
+    //   }
+    //   const member = {...this.state.member};
+    //   member.id = this.drone.clientId;
+    //   this.setState({member});
+    // });
+    // const room = this.drone.subscribe("observable-room");
+    // room.on('data', (data, member) => {
+    //   const messages = this.state.messages;
+    //   messages.push({member, text: data});
+    //   this.setState({messages});
+    // });
+  }
   }
 
   componentDidMount() {
     this.setState({ loading: true });
 
     this.props.firebase.user("GAMEROOMCHAT").on('value', snapshot => {
-      console.log(snapshot.val());
+      //console.log(snapshot.val());
       this.setState({
         serverdata: snapshot.val(),
         loading: false,
@@ -92,14 +104,60 @@ class ChatPage extends Component {
     this.props.firebase.user("GAMEROOMCHAT").off();
   }
 
-
-
   render() {
-  //  if (!this.state) {
-    //}
+    var user = firebase.auth().currentUser;
+    if (user && !this.state.userdata) {
+      this.props.firebase.user(user.uid).on('value', snapshot => {
+      //  console.log(snapshot.val());
+        this.setState({
+          userdata: snapshot.val(),
+          loading: false,
+        });
+      });
+      //this.state.member.username = user.name;
+    }
+    else if (this.state.userdata) {
+       this.state.member.username = this.state.userdata.name
+    }
+    else {
+      return (
+        <div>
+          <h1>Loading...</h1>
+        </div>
+      )
+    }
     var players = this.state;
    players = this.state.serverdata.players;
-    console.log(players);
+   this.state.hasAdded = this.state.serverdata.hasAdded;
+  //sole.log(players);
+  if (this.state.hasAdded) {
+    var notExists = true;
+    for (var i = 0; i < this.state.hasAdded.length; i++) {
+      if (this.state.hasAdded[i] == this.state.member.username || this.state.member.username === null){
+        notExists = false;
+      }
+    }
+    if (notExists){
+      this.state.hasAdded[this.state.hasAdded.length] = this.state.member.username
+      this.drone = new window.Scaledrone("09ce0IpIJ7oem4gE", {
+        data: this.state.member
+      });
+      this.drone.on('open', error => {
+        if (error) {
+          return console.error(error);
+        }
+        const member = {...this.state.member};
+        member.id = this.drone.clientId;
+        this.setState({member});
+      });
+      const room = this.drone.subscribe("observable-room");
+      room.on('data', (data, member) => {
+        const messages = this.state.messages;
+        messages.push({member, text: data});
+        this.setState({messages});
+      });
+    }
+  }
     if (players){
       var notExists = true;
       var i;
@@ -109,27 +167,30 @@ class ChatPage extends Component {
         }
       }
 
-      if (notExists) {
+      if (notExists && this.state.member.username !== null) {
+      //  console.log("player: " + this.state.member.username);
         players[players.length] = this.state.member.username;
       }
-      console.log("player " + players[0]);
+      //console.log("player " + players[0]);
 
 
   //  this.state.players[this.state.players.length] = this.state.member;
     var cars = ["FillerNotUser"];
      var database = firebase.database();
-     if (players.length < 5) {
+     if (players.length < 4) {
        firebase.database().ref('users/' + "GAMEROOMCHAT").set({
        isGame: "false",
        isOpen: "true",
-       players: players
+       players: players,
+       hasAdded: this.state.hasAdded
       });
     }
     else {
       firebase.database().ref('users/' + "GAMEROOMCHAT").set({
       isGame: "true",
       isOpen: "false",
-      players: players
+      players: players,
+      hasAdded: this.state.hasAdded
      });
     }
   }
