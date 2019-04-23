@@ -211,6 +211,24 @@ class ChatPage extends Component {
           <Input
             onSendMessage={this.onSendMessage}
           />
+          {(() => {
+            return this.state.serverdata.players.map((d, i) => {
+              return (
+                <div>
+              {(() => {
+                  if (d === "FillerNotUser"){
+
+                  }
+                  else {
+                return (
+                  <button>{d}</button>
+                )
+              }
+            })()}
+            </div>
+            )
+            })
+          })()}
         </div>
       );
     }
