@@ -86,9 +86,28 @@ class ChatPage extends Component {
     });
   }
 
-  onClick(e){
+  onClick(e, w){
     console.log("in on click");
     console.log(e);
+    if (this.state.userData.numVotes > 0) {
+      var newVotes = this.state.serverData.votes;
+      newVotes.push(this.state.userData.votes);
+      firebase.database().ref('users/' + "GAMEROOMCHAT").set({ //add the player
+        totalVotes: this.state.serverData.totalVotes + 1,
+        isGame: this.state.serverData.isGame,
+        isOpen: this.state.serverData.isOpen,
+        players: this.state.serverData.players,
+        hasAdded: this.state.serverData.hasAdded,
+        toKick: this.state.serverData.toKick,
+        votes: newVotes
+      });
+      firebase.database().ref('users/' + w).set({
+        name: this.state.userData.name,
+        email: this.state.userData.email,
+        numWins: this.state.userData.numWins,
+        numVotes: 0
+      });
+    }
   }
 
   render() {
@@ -200,7 +219,7 @@ class ChatPage extends Component {
               {(() => {
                 if (!(d === "FillerNotUser")){
                   return (
-                    <button name={d} onClick={() => this.onClick(d)}  >{"Vote " + d}</button>
+                    <button name={d} onClick={() => this.onClick(d, user.uid)}  >{"Vote " + d}</button>
                   )
                 }
               })()}
