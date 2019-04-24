@@ -176,18 +176,18 @@ class ChatPage extends Component {
       }
       if (notExists && this.state.member.username !== null) {
         players[players.length] = this.state.member.username;
+        firebase.database().ref('users/' + "GAMEROOMCHAT").set({ //add the player
+          isGame: this.state.serverdata.isGame,
+          isOpen: this.state.serverdata.isOpen,
+          players: players,
+          hasAdded: this.state.serverdata.hasAdded,
+          toKick: this.state.serverdata.toKick
+        });
       }
     }
     this.state.isGame = this.state.serverdata.isGame;
     console.log(this.state.isGame);
     if (this.state.isGame === "false") {
-      firebase.database().ref('users/' + "GAMEROOMCHAT").set({ //add the player
-        isGame: this.state.serverdata.isGame,
-        isOpen: this.state.serverdata.isOpen,
-        players: players,
-        hasAdded: this.state.serverdata.hasAdded,
-        toKick: this.state.serverdata.toKick
-      });
       if (players.length >= 4) { //change to 6
         firebase.database().ref('users/' + "GAMEROOMCHAT").set({
           isGame: "true",
