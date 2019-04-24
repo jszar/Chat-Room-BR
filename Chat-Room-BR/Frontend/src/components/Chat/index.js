@@ -42,7 +42,7 @@ function randomColor() {
 
 class ChatPage extends Component {
   state = {
-    serverdata: "",
+    serverData: "",
     userData: "",
     loading: false,
     messages: [],
@@ -56,7 +56,7 @@ class ChatPage extends Component {
     this.props.firebase.user("GAMEROOMCHAT").on('value', snapshot => {
       //console.log(snapshot.val());
       this.setState({
-        serverdata: snapshot.val(),
+        serverData: snapshot.val(),
         loading: false,
       });
     });
@@ -64,8 +64,6 @@ class ChatPage extends Component {
 
   componentWillUnmount() {
     this.props.firebase.user("GAMEROOMCHAT").off();
-    var user = firebase.auth().currentUser;
-    this.props.firebase.user(user.uid).off();
   }
 
   constructor() {
@@ -89,71 +87,68 @@ class ChatPage extends Component {
   }
 
   render() {
+    if (!this.state.serverData) { //load server
+      return (<div>Loading Server Data...</div>);
+    }
     var user = firebase.auth().currentUser;
-    if (user && !this.state.userdata) {
+    console.log(user);
+    if (user && !this.state.userData) {
       this.props.firebase.user(user.uid).on('value', snapshot => {
-        //  console.log(snapshot.val());
         this.setState({
-          userdata: snapshot.val(),
+          userData: snapshot.val(),
           loading: false,
         });
       });
     }
-    return (
-      <div className="App">
-      <Messages
-      messages={this.state.messages}
-      currentMember={this.state.member}
-      />
-      <Input
-      onSendMessage={this.onSendMessage}
-      />
-      </div>
-    );
+    if (!this.state.userData) { //load user
+      return (<div>Loading User Data...</div>);
+    }
     var database = firebase.database();
-    if (this.state.member.username.players){
+    if (this.state.serverData){
       var notExists = true;
       var i;
-      for (i = 0; i < this.state.member.username.players.length; i++){
-        if (this.state.member.username.players[i] === this.state.member.username) {
+      for (i = 0; i < this.state.serverData.players.length; i++){
+        if (this.state.serverData.players[i] === this.state.userData.name) {
           notExists = false;
         }
       }
-      if (this.state.member.username === "mario") {
-        notExists = false;
-      }
-      if (notExists && this.state.member.username !== null) {
+      if (notExists && this.state.userData.name) {
+        var newPlayers = this.state.serverData.players;
+        console.log(newPlayers);
+        console.log(this.state.userData.name);
+        newPlayers.push(this.state.userData.name);
         firebase.database().ref('users/' + "GAMEROOMCHAT").set({ //add the player
-          isGame: this.state.serverdata.isGame,
-          isOpen: this.state.serverdata.isOpen,
-          players: this.state.setverdata.players.push(this.state.member.username),
-          hasAdded: this.state.serverdata.hasAdded,
-          toKick: this.state.serverdata.toKick
+          isGame: this.state.serverData.isGame,
+          isOpen: this.state.serverData.isOpen,
+          players: newPlayers,
+          hasAdded: this.state.serverData.hasAdded,
+          toKick: this.state.serverData.toKick
         });
       }
     }
-    if (this.state.serverdata.isGame === "false") {
-      if (this.state.setverdata.players.length >= 4) { //change to 6
+    //GAME SHIT
+    if (this.state.serverData.isGame === "false") {
+      if (this.state.serverData.players.length >= 4) { //change to 6
         firebase.database().ref('users/' + "GAMEROOMCHAT").set({
           isGame: "true",
           isOpen: "false",
-          players: this.state.setverdata.players,
-          hasAdded: this.state.serverdata.hasAdded,
-          toKick: this.state.serverdata.toKick
+          players: this.state.serverData.players,
+          hasAdded: this.state.serverData.hasAdded,
+          toKick: this.state.serverData.toKick
         });
       } else {
         return(
           <div>
-          <h1>Please wait for 5 players (Current Players: {this.state.setverdata.players.length - 1})</h1>
+          <h1>Please wait for 5 players (Current Players: {this.state.serverData.players.length - 1})</h1>
           </div>
         );
       }
     } else {
-      if (this.state.setverdata.players.length === 3 || this.state.setverdata.players.length === 2) {
+      if (this.state.serverData.players.length === 3 || this.state.serverData.players.length === 2) {
         firebase.database().ref('users/' + user.uid).set({
-          name: this.state.userdata.name,
-          email: this.state.userdata.email,
-          numWins: this.state.userdata.numWins + 1
+          name: this.state.userData.name,
+          email: this.state.userData.email,
+          numWins: this.state.userData.numWins + 1
         });
         firebase.database().ref('users/' + "GAMEROOMCHAT").set({
           isGame: "true",
@@ -166,13 +161,13 @@ class ChatPage extends Component {
         return (<Redirect to={ROUTES.WIN} />);
 
       }
-      if (this.state.serverdata.toKick === this.state.userdata.name) {
+      if (this.state.serverData.toKick === this.state.userData.name) {
         firebase.database().ref('users/' + "GAMEROOMCHAT").set({
           isGame: "true",
           isOpen: "false",
-          players: this.state.setverdata.players.splice(this.state.setverdata.players.indexOf(user.name), 1),
-          hasAdded: this.state.serverdata.hasAdded,
-          toKick: this.state.serverdata.toKick
+          players: this.state.serverData.players.splice(this.state.serverData.players.indexOf(user.name), 1),
+          hasAdded: this.state.serverData.hasAdded,
+          toKick: this.state.serverData.toKick
         });
         console.log("some guy lost lmao");
         return (<Redirect to={ROUTES.LOSE} />);
@@ -190,7 +185,7 @@ class ChatPage extends Component {
         onSendMessage={this.onSendMessage}
         />
         {(() => {
-          return this.state.serverdata.players.map((d, i) => {
+          return this.state.serverData.players.map((d, i) => {
             return (
               <div>
               {(() => {

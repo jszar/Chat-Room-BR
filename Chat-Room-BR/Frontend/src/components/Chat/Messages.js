@@ -25,9 +25,6 @@ class Messages extends Component {
     return (
       <li className={className}>
         <div className="Message-content">
-          <div className="username">
-            {member.clientData.username}
-          </div>
           <div className="text">{text}</div>
         </div>
       </li>
