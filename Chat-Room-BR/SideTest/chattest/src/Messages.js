@@ -14,7 +14,8 @@ class Messages extends Component {
   renderMessage(message) {
     const {member, text} = message;
     if (!(member.clientData)) {
-      console.log("bro there it is!!!!!!");
+      console.log("dumbass.cc");
+      window.location.reload();
       return null;
     }
     const {currentMember} = this.props;
