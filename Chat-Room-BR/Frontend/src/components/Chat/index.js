@@ -66,6 +66,69 @@ class App extends Component {
   }
 
   render() {
+<<<<<<< HEAD
+=======
+    if (!(this.state.serverdata)) {
+      return(
+        <div>
+        <h1>Loading...</h1>
+        </div>
+      );
+    }
+    var user = firebase.auth().currentUser;
+    if (user && !this.state.userdata) {
+      this.props.firebase.user(user.uid).on('value', snapshot => {
+        //  console.log(snapshot.val());
+        this.setState({
+          userdata: snapshot.val(),
+          loading: false,
+        });
+      });
+      //this.state.member.username = user.name;
+    }
+    else if (this.state.userdata) {
+      this.state.member.username = this.state.userdata.name
+    }
+    else {
+      return (
+        <div>
+        <h1>Loading...</h1>
+        </div>
+      )
+    }
+    var players = this.state;
+    players = this.state.serverdata.players;
+    this.state.hasAdded = this.state.serverdata.hasAdded;
+    //sole.log(players);
+    if (this.state.hasAdded && this.state.member) {
+      var notExists = true;
+      for (var i = 0; i < this.state.hasAdded.length; i++) {
+        if (this.state.hasAdded[i] === this.state.member.username || this.state.member.username === "mario"){
+          notExists = false;
+        }
+      }
+      if (notExists){
+        this.state.hasAdded[this.state.hasAdded.length] = this.state.member.username
+        this.drone = new window.Scaledrone("09ce0IpIJ7oem4gE", {
+          data: this.state.member
+        });
+        this.drone.on('open', error => {
+          if (error) {
+            return console.error(error);
+          }
+          const member = {...this.state.member};
+          member.id = this.drone.clientId;
+          this.setState({member});
+        });
+        const room = this.drone.subscribe("gameroom420");
+        room.on('data', (data, member) => {
+          const messages = this.state.messages;
+          messages.push({member, text: data});
+          this.setState({messages});
+        });
+      }
+    }
+>>>>>>> parent of daf08e1... Small fix
     var database = firebase.database();
     if (players){
       var notExists = true;
