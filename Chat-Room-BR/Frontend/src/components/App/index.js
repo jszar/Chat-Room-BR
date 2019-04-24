@@ -7,6 +7,8 @@ import PasswordForgetPage from '../PasswordForget';
 import HomePage from '../Home';
 import ChatPage from '../Chat';
 import AccountPage from '../Account';
+import WinPage from '../Win';
+import LosePage from '../Lose';
 import * as ROUTES from '../../constants/routes';
 import { withFirebase } from '../Firebase';
 import { withAuthentication } from '../Session';
@@ -23,8 +25,8 @@ const App = () => (
       <Route path={ROUTES.HOME} component={HomePage} />
       <Route path={ROUTES.ACCOUNT} component={AccountPage} />
       <Route path={ROUTES.CHAT} component={ChatPage} />
-      <Route path={ROUTES.LOSE} component={Lose} />
-      <Route path={ROUTES.WIN} component={Win} />
+      <Route path={ROUTES.LOSE} component={LosePage} />
+      <Route path={ROUTES.WIN} component={WinPage} />
     </div>
   </Router>
 );
