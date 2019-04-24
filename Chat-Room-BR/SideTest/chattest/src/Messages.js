@@ -12,6 +12,9 @@ class Messages extends Component {
   }
 
   renderMessage(message) {
+    if (!(message)) {
+      return null;
+    }
     const {member, text} = message;
     const {currentMember} = this.props;
     const messageFromMe = member.id === currentMember.id;
