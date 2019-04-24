@@ -86,6 +86,11 @@ class ChatPage extends Component {
     });
   }
 
+  onClick(e){
+    console.log("in on click");
+    console.log(e);
+  }
+
   render() {
     if (!this.state.serverData) { //load server
       return (<div>Loading Server Data...</div>);
@@ -191,7 +196,7 @@ class ChatPage extends Component {
               {(() => {
                 if (!(d === "FillerNotUser")){
                   return (
-                    <button>{"Vote " + d}</button>
+                    <button name={d} onClick={() => this.onClick(d)}  >{"Vote " + d}</button>
                   )
                 }
               })()}
