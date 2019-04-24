@@ -91,7 +91,6 @@ class ChatPage extends Component {
       return (<div>Loading Server Data...</div>);
     }
     var user = firebase.auth().currentUser;
-    console.log(user);
     if (user && !this.state.userData) {
       this.props.firebase.user(user.uid).on('value', snapshot => {
         this.setState({
@@ -151,8 +150,8 @@ class ChatPage extends Component {
           numWins: this.state.userData.numWins + 1
         });
         firebase.database().ref('users/' + "GAMEROOMCHAT").set({
-          isGame: "true",
-          isOpen: "false",
+          isGame: "false",
+          isOpen: "true",
           players: ["FillerNotUser"],
           hasAdded: ["FillerNotUser"],
           toKick: ""
@@ -192,7 +191,7 @@ class ChatPage extends Component {
               {(() => {
                 if (!(d === "FillerNotUser")){
                   return (
-                    <button>{d}</button>
+                    <button>{"Vote " + d}</button>
                   )
                 }
               })()}
