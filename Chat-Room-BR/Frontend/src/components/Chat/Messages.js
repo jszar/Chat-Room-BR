@@ -13,28 +13,21 @@ class Messages extends Component {
 
   renderMessage(message) {
     const {member, text} = message;
+    if (!(member.clientData)) {
+      console.log("dumbass.cc");
+      window.location.reload();
+      return null;
+    }
     const {currentMember} = this.props;
-<<<<<<< HEAD
-=======
-    if (member && currentMember) {
-        member.username = "yikes"
-        member.color = "0xFFFFFF"
-    }
-    else {
-      console.log("error in message.js with member");
-      return (
-        <div>
-          <h1>loading...</h1>
-        </div>
-      )
-    }
->>>>>>> parent of daf08e1... Small fix
     const messageFromMe = member.id === currentMember.id;
     const className = messageFromMe ?
       "Messages-message currentMember" : "Messages-message";
     return (
       <li className={className}>
         <div className="Message-content">
+          <div className="username">
+            {member.clientData.username}
+          </div>
           <div className="text">{text}</div>
         </div>
       </li>
