@@ -93,7 +93,7 @@ class ChatPage extends Component {
 
   render() {
     var user = firebase.auth().currentUser;
-    if (user) {
+    if (user && !this.state.userdata) {
       this.props.firebase.user(user.uid).on('value', snapshot => {
         //  console.log(snapshot.val());
         this.setState({
@@ -113,107 +113,111 @@ class ChatPage extends Component {
       />
       </div>
     );
-    /*
     var database = firebase.database();
     if (this.state.member.username.players){
-    var notExists = true;
-    var i;
-    for (i = 0; i < this.state.member.username.players.length; i++){
-    if (this.state.member.username.players[i] === this.state.member.username) {
-    notExists = false;
-  }
-}
-if (this.state.member.username === "mario") {
-notExists = false;
-}
-if (notExists && this.state.member.username !== null) {
-firebase.database().ref('users/' + "GAMEROOMCHAT").set({ //add the player
-isGame: this.state.serverdata.isGame,
-isOpen: this.state.serverdata.isOpen,
-players: this.state.setverdata.players.push(this.state.member.username),
-hasAdded: this.state.serverdata.hasAdded,
-toKick: this.state.serverdata.toKick
-});
-}
-}
-if (this.state.serverdata.isGame === "false") {
-if (this.state.setverdata.players.length >= 4) { //change to 6
-firebase.database().ref('users/' + "GAMEROOMCHAT").set({
-isGame: "true",
-isOpen: "false",
-players: this.state.setverdata.players,
-hasAdded: this.state.serverdata.hasAdded,
-toKick: this.state.serverdata.toKick
-});
-} else {
-return(
-<div>
-<h1>Please wait for 5 players (Current Players: {this.state.setverdata.players.length - 1})</h1>
-</div>
-);
-}
-} else {
-if (this.state.setverdata.players.length === 3 || this.state.setverdata.players.length === 2) {
-firebase.database().ref('users/' + user.uid).set({
-name: this.state.userdata.name,
-email: this.state.userdata.email,
-numWins: this.state.userdata.numWins + 1
-});
-firebase.database().ref('users/' + "GAMEROOMCHAT").set({
-isGame: "true",
-isOpen: "false",
-players: ["FillerNotUser"],
-hasAdded: ["FillerNotUser"],
-toKick: ""
-});
-console.log("winner winner chicken dinner");
-return (<Redirect to={ROUTES.WIN} />);
+      var notExists = true;
+      var i;
+      for (i = 0; i < this.state.member.username.players.length; i++){
+        if (this.state.member.username.players[i] === this.state.member.username) {
+          notExists = false;
+        }
+      }
+      if (this.state.member.username === "mario") {
+        notExists = false;
+      }
+      if (notExists && this.state.member.username !== null) {
+        firebase.database().ref('users/' + "GAMEROOMCHAT").set({ //add the player
+          isGame: this.state.serverdata.isGame,
+          isOpen: this.state.serverdata.isOpen,
+          players: this.state.setverdata.players.push(this.state.member.username),
+          hasAdded: this.state.serverdata.hasAdded,
+          toKick: this.state.serverdata.toKick
+        });
+      }
+    }
+    if (this.state.serverdata.isGame === "false") {
+      if (this.state.setverdata.players.length >= 4) { //change to 6
+        firebase.database().ref('users/' + "GAMEROOMCHAT").set({
+          isGame: "true",
+          isOpen: "false",
+          players: this.state.setverdata.players,
+          hasAdded: this.state.serverdata.hasAdded,
+          toKick: this.state.serverdata.toKick
+        });
+      } else {
+        return(
+          <div>
+          <h1>Please wait for 5 players (Current Players: {this.state.setverdata.players.length - 1})</h1>
+          </div>
+        );
+      }
+    } else {
+      if (this.state.setverdata.players.length === 3 || this.state.setverdata.players.length === 2) {
+        firebase.database().ref('users/' + user.uid).set({
+          name: this.state.userdata.name,
+          email: this.state.userdata.email,
+          numWins: this.state.userdata.numWins + 1
+        });
+        firebase.database().ref('users/' + "GAMEROOMCHAT").set({
+          isGame: "true",
+          isOpen: "false",
+          players: ["FillerNotUser"],
+          hasAdded: ["FillerNotUser"],
+          toKick: ""
+        });
+        console.log("winner winner chicken dinner");
+        return (<Redirect to={ROUTES.WIN} />);
 
-}
-if (this.state.serverdata.toKick === this.state.userdata.name) {
-players.splice(players.indexOf(user.name), 1);
-console.log("some guy lost lmao");
-return (<Redirect to={ROUTES.LOSE} />);
-}
-return (
-<div className="App">
-<div className="App-header">
-<h1>My Chat App</h1>
-</div>
-<Messages
-messages={this.state.messages}
-currentMember={this.state.member}
-/>
-<Input
-onSendMessage={this.onSendMessage}
-/>
-{(() => {
-return this.state.serverdata.players.map((d, i) => {
-return (
-<div>
-{(() => {
-if (!(d === "FillerNotUser")){
-return (
-<button>{d}</button>
-)
-}
-})()}
-</div>
-)
-})
-})()}
-</div>
-);
-}
-return null;
-*/
-}
-onSendMessage = (message) => {
-  this.drone.publish({
-    room: "observable-room",
-    message
-  });
-}
+      }
+      if (this.state.serverdata.toKick === this.state.userdata.name) {
+        firebase.database().ref('users/' + "GAMEROOMCHAT").set({
+          isGame: "true",
+          isOpen: "false",
+          players: this.state.setverdata.players.splice(this.state.setverdata.players.indexOf(user.name), 1);,
+          hasAdded: this.state.serverdata.hasAdded,
+          toKick: this.state.serverdata.toKick
+        });
+        console.log("some guy lost lmao");
+        return (<Redirect to={ROUTES.LOSE} />);
+      }
+      return (
+        <div className="App">
+        <div className="App-header">
+        <h1>My Chat App</h1>
+        </div>
+        <Messages
+        messages={this.state.messages}
+        currentMember={this.state.member}
+        />
+        <Input
+        onSendMessage={this.onSendMessage}
+        />
+        {(() => {
+          return this.state.serverdata.players.map((d, i) => {
+            return (
+              <div>
+              {(() => {
+                if (!(d === "FillerNotUser")){
+                  return (
+                    <button>{d}</button>
+                  )
+                }
+              })()}
+              </div>
+            )
+          })
+        })()}
+        </div>
+      );
+    }
+    return null;
+  }
+  onSendMessage = (message) => {
+    this.drone.publish({
+      room: "observable-room",
+      message
+    });
+  }
 }
 
 export default withFirebase(ChatPage);
