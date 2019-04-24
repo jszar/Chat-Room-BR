@@ -91,7 +91,7 @@ class ChatPage extends Component {
       return (<div>Loading Server Data...</div>);
     }
     var user = firebase.auth().currentUser;
-    console.log(user);
+    //console.log(user);
     if (user && !this.state.userData) {
       this.props.firebase.user(user.uid).on('value', snapshot => {
         this.setState({
