@@ -157,7 +157,7 @@ class ChatPage extends Component {
           member.id = this.drone.clientId;
           this.setState({member});
         });
-        const room = this.drone.subscribe("observable-room");
+        const room = this.drone.subscribe("gameroom420");
         room.on('data', (data, member) => {
           const messages = this.state.messages;
           messages.push({member, text: data});
@@ -209,18 +209,17 @@ class ChatPage extends Component {
     } else {
       //if (players) {
       if (players.length === 3 || players.length === 2) {
-        players.splice(players.indexOf(user.name), 1);
         firebase.database().ref('users/' + user.uid).set({
           name: this.state.userdata.name,
           email: this.state.userdata.email,
-          numWins: this.state.userdata.numWins++
+          numWins: this.state.userdata.numWins + 1
         });
         firebase.database().ref('users/' + "GAMEROOMCHAT").set({
           isGame: "true",
           isOpen: "false",
-          players: players,
-          hasAdded: this.state.serverdata.hasAdded,
-          toKick: this.state.serverdata.toKick
+          players: ["FillerNotUser"],
+          hasAdded: ["FillerNotUser"],
+          toKick: ""
         });
         console.log("winner winner chicken dinner");
         // TODO: redirect to win screen
