@@ -12,34 +12,21 @@ class Messages extends Component {
   }
 
   renderMessage(message) {
-
     const {member, text} = message;
+    if (!(member.clientData)) {
+      console.log("dumbass.cc");
+      window.location.reload();
+      return null;
+    }
     const {currentMember} = this.props;
-    if (member && currentMember) {
-        console.log(member);
-        console.log(currentMember);
-    }
-    else {
-      console.log("error in message.js with member");
-      // return (
-      //   <div>
-      //     <h1>loading...</h1>
-      //   </div>
-      // )
-      member= {
-        username: "mario" ,
-        color: "0xFFFFFF",
-      }
-
-    }
     const messageFromMe = member.id === currentMember.id;
     const className = messageFromMe ?
       "Messages-message currentMember" : "Messages-message";
     return (
       <li className={className}>
         <div className="Message-content">
-          <div className="name">
-            {member.clientData.name}
+          <div className="username">
+            {member.clientData.username}
           </div>
           <div className="text">{text}</div>
         </div>

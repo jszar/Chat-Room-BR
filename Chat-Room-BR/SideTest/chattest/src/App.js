@@ -53,6 +53,11 @@ class App extends Component {
       /*if (error) {
         return console.error(error);
       }*/
+      if (!(member.clientData)) {
+        console.log("dumbass.cc");
+        window.location.reload();
+        return null;
+      }
       const member = {...this.state.member};
       member.id = this.drone.clientId;
       this.setState({member});
