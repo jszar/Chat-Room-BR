@@ -43,7 +43,7 @@ function randomColor() {
 const INITIAL_STATE = {
   messages: [],
   member: {
-    username: null ,
+    username: "mario" ,
     color: randomColor(),
   },
   serverdata: "",
@@ -137,10 +137,10 @@ class ChatPage extends Component {
     players = this.state.serverdata.players;
     this.state.hasAdded = this.state.serverdata.hasAdded;
     //sole.log(players);
-    if (this.state.hasAdded) {
+    if (this.state.hasAdded && this.state.member) {
       var notExists = true;
       for (var i = 0; i < this.state.hasAdded.length; i++) {
-        if (this.state.hasAdded[i] === this.state.member.username || this.state.member.username === null){
+        if (this.state.hasAdded[i] === this.state.member.username || this.state.member.username === "mario"){
           notExists = false;
         }
       }
@@ -173,6 +173,9 @@ class ChatPage extends Component {
         if (players[i] === this.state.member.username) {
           notExists = false;
         }
+      }
+      if (this.state.member.username === "mario") {
+        notExists = false;
       }
       if (notExists && this.state.member.username !== null) {
         players[players.length] = this.state.member.username;
