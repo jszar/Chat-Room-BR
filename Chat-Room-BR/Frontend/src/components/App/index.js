@@ -23,6 +23,8 @@ const App = () => (
       <Route path={ROUTES.HOME} component={HomePage} />
       <Route path={ROUTES.ACCOUNT} component={AccountPage} />
       <Route path={ROUTES.CHAT} component={ChatPage} />
+      <Route path={ROUTES.LOSE} component={Lose} />
+      <Route path={ROUTES.WIN} component={Win} />
     </div>
   </Router>
 );
