@@ -176,14 +176,16 @@ class ChatPage extends Component {
         isGame: this.state.isGame,
         isOpen: this.state.isOpen,
         players: players,
-        hasAdded: this.state.hasAdded
+        hasAdded: this.state.hasAdded,
+        toKick: this.state.toKick
       });
       if (players.length >= 4) { //change to 6
         firebase.database().ref('users/' + "GAMEROOMCHAT").set({
           isGame: "true",
           isOpen: "false",
           players: players,
-          hasAdded: this.state.hasAdded
+          hasAdded: this.state.hasAdded,
+          toKick: this.state.toKick
         });
       } else {
         return(
@@ -203,12 +205,15 @@ class ChatPage extends Component {
           isGame: "true",
           isOpen: "false",
           players: players,
-          hasAdded: this.state.hasAdded
+          hasAdded: this.state.hasAdded,
+          toKick: this.state.toKick
         });
+        console.log("winner winner chicken dinner");
         // TODO: redirect to win screen
       }
       if (this.state.toKick === userdata.name) {
         players.splice(players.indexOf(user.name), 1);
+        console.log("some guy lost lmao");
         // TODO: redirect to lose screen
       }
       return (
