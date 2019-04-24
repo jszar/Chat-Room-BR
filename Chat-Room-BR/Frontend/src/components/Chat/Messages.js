@@ -16,16 +16,21 @@ class Messages extends Component {
     const {member, text} = message;
     const {currentMember} = this.props;
     if (member && currentMember) {
-        member.username = "yikes"
-        member.color = "0xFFFFFF"
+        console.log(member);
+        console.log(currentMember);
     }
     else {
       console.log("error in message.js with member");
-      return (
-        <div>
-          <h1>loading...</h1>
-        </div>
-      )
+      // return (
+      //   <div>
+      //     <h1>loading...</h1>
+      //   </div>
+      // )
+      member= {
+        username: "mario" ,
+        color: "0xFFFFFF",
+      }
+
     }
     const messageFromMe = member.id === currentMember.id;
     const className = messageFromMe ?

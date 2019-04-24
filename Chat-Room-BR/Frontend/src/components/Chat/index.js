@@ -157,7 +157,7 @@ class ChatPage extends Component {
           member.id = this.drone.clientId;
           this.setState({member});
         });
-        const room = this.drone.subscribe("gameroom420");
+        const room = this.drone.subscribe("observable-room");
         room.on('data', (data, member) => {
           const messages = this.state.messages;
           messages.push({member, text: data});
