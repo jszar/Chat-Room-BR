@@ -144,7 +144,7 @@ class ChatPage extends Component {
         );
       }
     } else {
-      if (this.state.serverData.players.length === 3 || this.state.serverData.players.length === 2) {
+      if (this.state.serverData.players.length === 2) {
         firebase.database().ref('users/' + user.uid).set({
           name: this.state.userData.name,
           email: this.state.userData.email,
@@ -159,7 +159,6 @@ class ChatPage extends Component {
         });
         console.log("winner winner chicken dinner");
         return (<Redirect to={ROUTES.WIN} />);
-
       }
       if (this.state.serverData.toKick === this.state.userData.name) {
         firebase.database().ref('users/' + "GAMEROOMCHAT").set({
