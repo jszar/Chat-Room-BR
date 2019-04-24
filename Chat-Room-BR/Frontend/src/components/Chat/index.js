@@ -161,10 +161,12 @@ class ChatPage extends Component {
         return (<Redirect to={ROUTES.WIN} />);
       }
       if (this.state.serverData.toKick === this.state.userData.name) {
+        var newPlayers = this.state.serverData.players;
+        newPlayers.splice(this.state.serverData.players.indexOf(this.state.userData.name), 1);
         firebase.database().ref('users/' + "GAMEROOMCHAT").set({
           isGame: "true",
           isOpen: "false",
-          players: this.state.serverData.players.splice(this.state.serverData.players.indexOf(user.name), 1),
+          players: newPlayers,
           hasAdded: this.state.serverData.hasAdded,
           toKick: this.state.serverData.toKick
         });
