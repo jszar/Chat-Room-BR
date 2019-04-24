@@ -66,6 +66,7 @@ class App extends Component {
   }
 
   render() {
+    //asdf
     var database = firebase.database();
     if (players){
       var notExists = true;
