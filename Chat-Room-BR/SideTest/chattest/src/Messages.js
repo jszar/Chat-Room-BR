@@ -13,11 +13,6 @@ class Messages extends Component {
 
   renderMessage(message) {
     const {member, text} = message;
-    if (!(member.clientData)) {
-      console.log("dumbass.cc");
-      window.location.reload();
-      return null;
-    }
     const {currentMember} = this.props;
     const messageFromMe = member.id === currentMember.id;
     const className = messageFromMe ?
@@ -25,9 +20,6 @@ class Messages extends Component {
     return (
       <li className={className}>
         <div className="Message-content">
-          <div className="username">
-            {member.clientData.username}
-          </div>
           <div className="text">{text}</div>
         </div>
       </li>
