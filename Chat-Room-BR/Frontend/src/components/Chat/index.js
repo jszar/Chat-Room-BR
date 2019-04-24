@@ -117,6 +117,7 @@ class ChatPage extends Component {
         console.log(this.state.userData.name);
         newPlayers.push(this.state.userData.name);
         firebase.database().ref('users/' + "GAMEROOMCHAT").set({ //add the player
+          totalVotes: this.state.serverData.totalVotes,
           isGame: this.state.serverData.isGame,
           isOpen: this.state.serverData.isOpen,
           players: newPlayers,
@@ -129,6 +130,7 @@ class ChatPage extends Component {
     if (this.state.serverData.isGame === "false") {
       if (this.state.serverData.players.length >= 4) { //change to 6
         firebase.database().ref('users/' + "GAMEROOMCHAT").set({
+          totalVotes: this.state.serverData.totalVotes,
           isGame: "true",
           isOpen: "false",
           players: this.state.serverData.players,
@@ -150,6 +152,7 @@ class ChatPage extends Component {
           numWins: this.state.userData.numWins + 1
         });
         firebase.database().ref('users/' + "GAMEROOMCHAT").set({
+          totalVotes: 0,
           isGame: "false",
           isOpen: "true",
           players: ["FillerNotUser"],
@@ -163,6 +166,7 @@ class ChatPage extends Component {
         var newPlayers = this.state.serverData.players;
         newPlayers.splice(this.state.serverData.players.indexOf(this.state.userData.name), 1);
         firebase.database().ref('users/' + "GAMEROOMCHAT").set({
+          totalVotes: 0,
           isGame: "true",
           isOpen: "false",
           players: newPlayers,
