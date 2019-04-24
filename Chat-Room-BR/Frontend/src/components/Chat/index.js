@@ -105,6 +105,13 @@ class ChatPage extends Component {
   }
 
   render() {
+    if (!(this.state.serverdata)) {
+      return(
+        <div>
+        <h1>Loading...</h1>
+        </div>
+      );
+    }
     var user = firebase.auth().currentUser;
     if (user && !this.state.userdata) {
       this.props.firebase.user(user.uid).on('value', snapshot => {
@@ -133,7 +140,7 @@ class ChatPage extends Component {
     if (this.state.hasAdded) {
       var notExists = true;
       for (var i = 0; i < this.state.hasAdded.length; i++) {
-        if (this.state.hasAdded[i] == this.state.member.username || this.state.member.username === null){
+        if (this.state.hasAdded[i] === this.state.member.username || this.state.member.username === null){
           notExists = false;
         }
       }
@@ -171,21 +178,23 @@ class ChatPage extends Component {
         players[players.length] = this.state.member.username;
       }
     }
+    this.state.isGame = this.state.serverdata.isGame;
+    console.log(this.state.isGame);
     if (this.state.isGame === "false") {
       firebase.database().ref('users/' + "GAMEROOMCHAT").set({ //add the player
-        isGame: this.state.isGame,
-        isOpen: this.state.isOpen,
+        isGame: this.state.serverdata.isGame,
+        isOpen: this.state.serverdata.isOpen,
         players: players,
-        hasAdded: this.state.hasAdded,
-        toKick: this.state.toKick
+        hasAdded: this.state.serverdata.hasAdded,
+        toKick: this.state.serverdata.toKick
       });
       if (players.length >= 4) { //change to 6
         firebase.database().ref('users/' + "GAMEROOMCHAT").set({
           isGame: "true",
           isOpen: "false",
           players: players,
-          hasAdded: this.state.hasAdded,
-          toKick: this.state.toKick
+          hasAdded: this.state.serverdata.hasAdded,
+          toKick: this.state.serverdata.toKick
         });
       } else {
         return(
@@ -195,65 +204,77 @@ class ChatPage extends Component {
         );
       }
     } else {
-      if (players.length = 3 || players.length = 2) {
+      //if (players) {
+      if (players.length === 3 || players.length === 2) {
         players.splice(players.indexOf(user.name), 1);
         firebase.database().ref('users/' + user.uid).set({
-          name: userdata.name,
-          email: userdata.email,
-          numWins: userdata.numWins++,
+          name: this.state.userdata.name,
+          email: this.state.userdata.email,
+          numWins: this.state.userdata.numWins++
+        });
         firebase.database().ref('users/' + "GAMEROOMCHAT").set({
           isGame: "true",
           isOpen: "false",
           players: players,
-          hasAdded: this.state.hasAdded,
-          toKick: this.state.toKick
+          hasAdded: this.state.serverdata.hasAdded,
+          toKick: this.state.serverdata.toKick
         });
         console.log("winner winner chicken dinner");
         // TODO: redirect to win screen
-      }
-      if (this.state.toKick === userdata.name) {
-        players.splice(players.indexOf(user.name), 1);
-        console.log("some guy lost lmao");
-        // TODO: redirect to lose screen
-      }
-      return (
-        <div className="App">
-        <div className="App-header">
-        <h1>My Chat App</h1>
-        </div>
-        <Messages
-        messages={this.state.messages}
-        currentMember={this.state.member}
-        />
-        <Input
-        onSendMessage={this.onSendMessage}
-        />
-        {(() => {
-          return this.state.serverdata.players.map((d, i) => {
-            return (
-              <div>
-              {(() => {
-                if (!(d === "FillerNotUser")){
-                  return (
-                    <button>{d}</button>
-                  )
-                }
-              })()}
-              </div>
-            )
-          })
-        })()}
-        </div>
-      );
-    }
-  }
 
-  onSendMessage = (message) => {
-    this.drone.publish({
-      room: "gameroom420",
-      message
-    });
+      }
+      /*}
+      else {
+      return (
+      <div>
+      <h1>Loading...</h1>
+      </div>
+    )
+  }*/
+  if (this.state.toKick === this.state.userdata.name) {
+    players.splice(players.indexOf(user.name), 1);
+    console.log("some guy lost lmao");
+    // TODO: redirect to lose screen
   }
+  return (
+    <div className="App">
+    <div className="App-header">
+    <h1>My Chat App</h1>
+    </div>
+    <Messages
+    messages={this.state.messages}
+    currentMember={this.state.member}
+    />
+    <Input
+    onSendMessage={this.onSendMessage}
+    />
+    {(() => {
+      return this.state.serverdata.players.map((d, i) => {
+        return (
+          <div>
+          {(() => {
+            if (!(d === "FillerNotUser")){
+              return (
+                <button>{d}</button>
+              )
+            }
+          })()}
+          </div>
+        )
+      })
+    })()}
+    </div>
+  );
+}
+return null;
+}
+
+onSendMessage = (message) => {
+  this.drone.publish({
+    room: "gameroom420",
+    message
+  });
+}
 
 }
 
