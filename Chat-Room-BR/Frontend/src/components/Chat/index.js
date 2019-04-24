@@ -67,26 +67,26 @@ class ChatPage extends Component {
 
     if (true) {
       //console.log(this.state.member.username);
-    //players[index] = this.state.member;
-    index++;
-    // this.drone = new window.Scaledrone("09ce0IpIJ7oem4gE", {
-    //   data: this.state.member
-    // });
-    // this.drone.on('open', error => {
-    //   if (error) {
-    //     return console.error(error);
-    //   }
-    //   const member = {...this.state.member};
-    //   member.id = this.drone.clientId;
-    //   this.setState({member});
-    // });
-    // const room = this.drone.subscribe("observable-room");
-    // room.on('data', (data, member) => {
-    //   const messages = this.state.messages;
-    //   messages.push({member, text: data});
-    //   this.setState({messages});
-    // });
-  }
+      //players[index] = this.state.member;
+      index++;
+      // this.drone = new window.Scaledrone("09ce0IpIJ7oem4gE", {
+      //   data: this.state.member
+      // });
+      // this.drone.on('open', error => {
+      //   if (error) {
+      //     return console.error(error);
+      //   }
+      //   const member = {...this.state.member};
+      //   member.id = this.drone.clientId;
+      //   this.setState({member});
+      // });
+      // const room = this.drone.subscribe("observable-room");
+      // room.on('data', (data, member) => {
+      //   const messages = this.state.messages;
+      //   messages.push({member, text: data});
+      //   this.setState({messages});
+      // });
+    }
   }
 
   componentDidMount() {
@@ -108,7 +108,7 @@ class ChatPage extends Component {
     var user = firebase.auth().currentUser;
     if (user && !this.state.userdata) {
       this.props.firebase.user(user.uid).on('value', snapshot => {
-      //  console.log(snapshot.val());
+        //  console.log(snapshot.val());
         this.setState({
           userdata: snapshot.val(),
           loading: false,
@@ -117,47 +117,48 @@ class ChatPage extends Component {
       //this.state.member.username = user.name;
     }
     else if (this.state.userdata) {
-       this.state.member.username = this.state.userdata.name
+      this.state.member.username = this.state.userdata.name
     }
     else {
       return (
         <div>
-          <h1>Loading...</h1>
+        <h1>Loading...</h1>
         </div>
       )
     }
     var players = this.state;
-   players = this.state.serverdata.players;
-   this.state.hasAdded = this.state.serverdata.hasAdded;
-  //sole.log(players);
-  if (this.state.hasAdded) {
-    var notExists = true;
-    for (var i = 0; i < this.state.hasAdded.length; i++) {
-      if (this.state.hasAdded[i] == this.state.member.username || this.state.member.username === null){
-        notExists = false;
+    players = this.state.serverdata.players;
+    this.state.hasAdded = this.state.serverdata.hasAdded;
+    //sole.log(players);
+    if (this.state.hasAdded) {
+      var notExists = true;
+      for (var i = 0; i < this.state.hasAdded.length; i++) {
+        if (this.state.hasAdded[i] == this.state.member.username || this.state.member.username === null){
+          notExists = false;
+        }
+      }
+      if (notExists){
+        this.state.hasAdded[this.state.hasAdded.length] = this.state.member.username
+        this.drone = new window.Scaledrone("09ce0IpIJ7oem4gE", {
+          data: this.state.member
+        });
+        this.drone.on('open', error => {
+          if (error) {
+            return console.error(error);
+          }
+          const member = {...this.state.member};
+          member.id = this.drone.clientId;
+          this.setState({member});
+        });
+        const room = this.drone.subscribe("gameroom420");
+        room.on('data', (data, member) => {
+          const messages = this.state.messages;
+          messages.push({member, text: data});
+          this.setState({messages});
+        });
       }
     }
-    if (notExists){
-      this.state.hasAdded[this.state.hasAdded.length] = this.state.member.username
-      this.drone = new window.Scaledrone("09ce0IpIJ7oem4gE", {
-        data: this.state.member
-      });
-      this.drone.on('open', error => {
-        if (error) {
-          return console.error(error);
-        }
-        const member = {...this.state.member};
-        member.id = this.drone.clientId;
-        this.setState({member});
-      });
-      const room = this.drone.subscribe("observable-room");
-      room.on('data', (data, member) => {
-        const messages = this.state.messages;
-        messages.push({member, text: data});
-        this.setState({messages});
-      });
-    }
-  }
+    var database = firebase.database();
     if (players){
       var notExists = true;
       var i;
@@ -166,84 +167,85 @@ class ChatPage extends Component {
           notExists = false;
         }
       }
-
       if (notExists && this.state.member.username !== null) {
-      //  console.log("player: " + this.state.member.username);
         players[players.length] = this.state.member.username;
       }
-      //console.log("player " + players[0]);
-
-
-  //  this.state.players[this.state.players.length] = this.state.member;
-    var cars = ["FillerNotUser"];
-     var database = firebase.database();
-     if (players.length < 4) {
-       firebase.database().ref('users/' + "GAMEROOMCHAT").set({
-       isGame: "false",
-       isOpen: "true",
-       players: players,
-       hasAdded: this.state.hasAdded
+    }
+    if (this.state.isGame === "false") {
+      firebase.database().ref('users/' + "GAMEROOMCHAT").set({ //add the player
+        isGame: this.state.isGame,
+        isOpen: this.state.isOpen,
+        players: players,
+        hasAdded: this.state.hasAdded
       });
-    }
-    else {
-      firebase.database().ref('users/' + "GAMEROOMCHAT").set({
-      isGame: "true",
-      isOpen: "false",
-      players: players,
-      hasAdded: this.state.hasAdded
-     });
-    }
-  }
-      if (true) {
-        //if number of players >= 5 set isGame to true
+      if (players.length >= 4) { //change to 6
+        firebase.database().ref('users/' + "GAMEROOMCHAT").set({
+          isGame: "true",
+          isOpen: "false",
+          players: players,
+          hasAdded: this.state.hasAdded
+        });
+      } else {
+        return(
+          <div>
+          <h1>Please wait for 5 players (Current Players: {players.length - 1})</h1>
+          </div>
+        );
       }
-      this.state.isGame = this.state.serverdata.isGame;
-      if (this.state.isGame === "true"){
+    } else {
+      if (players.length = 3 || players.length = 2) {
+        players.splice(players.indexOf(user.name), 1);
+        firebase.database().ref('users/' + user.uid).set({
+          name: userdata.name,
+          email: userdata.email,
+          numWins: userdata.numWins++,
+        firebase.database().ref('users/' + "GAMEROOMCHAT").set({
+          isGame: "true",
+          isOpen: "false",
+          players: players,
+          hasAdded: this.state.hasAdded
+        });
+        // TODO: redirect to win screen
+      }
+      if (this.state.toKick === userdata.name) {
+        players.splice(players.indexOf(user.name), 1);
+        // TODO: redirect to lose screen
+      }
       return (
         <div className="App">
-          <div className="App-header">
-            <h1>My Chat App</h1>
-          </div>
-          <Messages
-            messages={this.state.messages}
-            currentMember={this.state.member}
-          />
-          <Input
-            onSendMessage={this.onSendMessage}
-          />
-          {(() => {
-            return this.state.serverdata.players.map((d, i) => {
-              return (
-                <div>
+        <div className="App-header">
+        <h1>My Chat App</h1>
+        </div>
+        <Messages
+        messages={this.state.messages}
+        currentMember={this.state.member}
+        />
+        <Input
+        onSendMessage={this.onSendMessage}
+        />
+        {(() => {
+          return this.state.serverdata.players.map((d, i) => {
+            return (
+              <div>
               {(() => {
-                  if (d === "FillerNotUser"){
-
-                  }
-                  else {
-                return (
-                  <button>{d}</button>
-                )
-              }
-            })()}
-            </div>
+                if (!(d === "FillerNotUser")){
+                  return (
+                    <button>{d}</button>
+                  )
+                }
+              })()}
+              </div>
             )
-            })
-          })()}
+          })
+        })()}
         </div>
       );
-    }
-    else {
-      return(
-        <div>
-          <h1>Please for the game to start</h1>
-        </div>
-      )
     }
   }
 
   onSendMessage = (message) => {
     this.drone.publish({
-      room: "observable-room",
+      room: "gameroom420",
       message
     });
   }
