@@ -5,6 +5,8 @@ import Input from "./Input";
 import { withFirebase } from '../Firebase';
 import config from '../Firebase';
 import * as firebase from 'firebase';
+import { Redirect } from 'react-router-dom';
+import * as ROUTES from '../../constants/routes';
 
 function randomName() {
   const adjectives = [
@@ -42,7 +44,12 @@ class ChatPage extends Component {
   state = {
     serverdata: "",
     userData: "",
-    loading: false
+    loading: false,
+    messages: [],
+    member: {
+      username: randomName(),
+      color: randomColor(),
+    }
   }
   componentDidMount() {
     this.setState({ loading: true });
@@ -59,16 +66,6 @@ class ChatPage extends Component {
     this.props.firebase.user("GAMEROOMCHAT").off();
     var user = firebase.auth().currentUser;
     this.props.firebase.user(user.uid).off();
-  }
-
-
-  state = {
-    messages: [],
-    member: {
-      username: randomName(),
-      color: randomColor(),
-    },
-    userData: "",
   }
 
   constructor() {
@@ -173,7 +170,7 @@ class ChatPage extends Component {
         firebase.database().ref('users/' + "GAMEROOMCHAT").set({
           isGame: "true",
           isOpen: "false",
-          players: this.state.setverdata.players.splice(this.state.setverdata.players.indexOf(user.name), 1);,
+          players: this.state.setverdata.players.splice(this.state.setverdata.players.indexOf(user.name), 1),
           hasAdded: this.state.serverdata.hasAdded,
           toKick: this.state.serverdata.toKick
         });
