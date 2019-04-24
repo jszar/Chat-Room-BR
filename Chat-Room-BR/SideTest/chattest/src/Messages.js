@@ -13,7 +13,7 @@ class Messages extends Component {
 
   renderMessage(message) {
     const {member, text} = message;
-    if (!(member)) {
+    if (!(member.clientData)) {
       console.log("bro there it is!!!!!!");
       return null;
     }
