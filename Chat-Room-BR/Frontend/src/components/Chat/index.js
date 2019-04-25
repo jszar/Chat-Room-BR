@@ -146,7 +146,8 @@ class ChatPage extends Component {
           isOpen: this.state.serverData.isOpen,
           players: newPlayers,
           hasAdded: this.state.serverData.hasAdded,
-          toKick: this.state.serverData.toKick
+          toKick: this.state.serverData.toKick,
+          votes: this.state.serverData.votes
         });
       }
     }
@@ -159,7 +160,8 @@ class ChatPage extends Component {
           isOpen: "false",
           players: this.state.serverData.players,
           hasAdded: this.state.serverData.hasAdded,
-          toKick: this.state.serverData.toKick
+          toKick: this.state.serverData.toKick,
+          votes: this.state.serverData.votes
         });
       } else {
         return(
@@ -195,7 +197,8 @@ class ChatPage extends Component {
           isOpen: "false",
           players: this.state.serverData.players,
           hasAdded: this.state.serverData.hasAdded,
-          toKick: player;
+          toKick: player,
+          votes: this.state.serverData.votes
         });
         firebase.database().ref('users/' + user.uid).set({
           name: this.state.userData.name,
@@ -208,7 +211,8 @@ class ChatPage extends Component {
         firebase.database().ref('users/' + user.uid).set({
           name: this.state.userData.name,
           email: this.state.userData.email,
-          numWins: this.state.userData.numWins + 1
+          numWins: this.state.userData.numWins + 1,
+          numVotes: this.state.numVotes
         });
         firebase.database().ref('users/' + "GAMEROOMCHAT").set({
           totalVotes: 0,
@@ -216,7 +220,8 @@ class ChatPage extends Component {
           isOpen: "true",
           players: ["FillerNotUser"],
           hasAdded: ["FillerNotUser"],
-          toKick: ""
+          toKick: "",
+          votes: ["FillerNotUser"]
         });
         console.log("winner winner chicken dinner");
         return (<Redirect to={ROUTES.WIN} />);
@@ -230,7 +235,8 @@ class ChatPage extends Component {
           isOpen: "false",
           players: newPlayers,
           hasAdded: this.state.serverData.hasAdded,
-          toKick: this.state.serverData.toKick
+          toKick: this.state.serverData.toKick,
+          votes: this.state.serverData.votes
         });
         console.log("some guy lost lmao");
         return (<Redirect to={ROUTES.LOSE} />);
