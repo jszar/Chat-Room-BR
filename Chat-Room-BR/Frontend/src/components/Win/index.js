@@ -1,13 +1,14 @@
 import React from 'react';
-import logo from './AliveNippyJunebug-max-1mb.gif'
+import './index.css';
+import thanos from './thanos.gif';
 import * as ROUTES from '../../constants/routes';
 
 const WinPage = () => (
-  <div>
-    <h1>WINNER WINNER CHICKEN VICTORY ROYALE</h1>
-    <img src={logo}/>
+  <div class="center">
+    <h1>You win!</h1>
     <br/>
     <a href={ROUTES.HOME}>Go Home</a>
+    <img src={thanos} id="bg"/>
   </div>
 );
 
