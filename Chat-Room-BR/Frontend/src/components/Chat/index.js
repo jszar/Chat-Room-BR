@@ -8,6 +8,7 @@ import * as firebase from 'firebase';
 import { Redirect } from 'react-router-dom';
 import * as ROUTES from '../../constants/routes';
 
+
 function randomName() {
   const adjectives = [
     "autumn", "hidden", "bitter", "misty", "silent", "empty", "dry", "dark",
@@ -39,6 +40,7 @@ function randomName() {
 function randomColor() {
   return '#' + Math.floor(Math.random() * 0xFFFFFF).toString(16);
 }
+
 
 class ChatPage extends Component {
   state = {
@@ -110,7 +112,11 @@ class ChatPage extends Component {
     }
   }
 
+
   render() {
+
+
+
     if (!this.state.serverData) { //load server
       return (<div>Loading Server Data...</div>);
     }
@@ -249,9 +255,6 @@ class ChatPage extends Component {
       }
       return (
         <div className="App">
-        <div className="App-header">
-        <h1>My Chat App</h1>
-        </div>
         <Messages
         messages={this.state.messages}
         currentMember={this.state.member}
