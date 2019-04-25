@@ -1,10 +1,9 @@
 import React from 'react';
-import logo from './AliveNippyJunebug-max-1mb.gif'
+import './index.css';
 
 const WinPage = () => (
   <div>
-    <h1>WINNER WINNER CHICKEN VICTORY ROYALE</h1>
-    <img src={logo}/>
+    <h1 class="center">You win!</h1>
   </div>
 );
 
