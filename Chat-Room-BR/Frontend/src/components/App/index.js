@@ -13,12 +13,11 @@ import * as ROUTES from '../../constants/routes';
 import { withFirebase } from '../Firebase';
 import { withAuthentication } from '../Session';
 
-
+//  <Navigation />
+//  <hr/>
 const App = () => (
   <Router>
     <div>
-      <Navigation />
-      <hr/>
       <Route path={ROUTES.SIGN_UP} component={SignUpPage} />
       <Route exact path={ROUTES.SIGN_IN} component={SignInPage} />
       <Route path={ROUTES.PASSWORD_FORGET} component={PasswordForgetPage}/>
