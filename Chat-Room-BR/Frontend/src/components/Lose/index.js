@@ -1,13 +1,14 @@
 import React from 'react';
+import './index.css';
+import ninja from './ninja.gif'
 import * as ROUTES from '../../constants/routes';
-import logo from './tumblr_m89kkgWqNr1rq1xcqo1_500.gif'
 
 const LosePage = () => (
-  <div>
-    <h1>LMAO YOU LOST</h1>
-    <img src={logo}/>
+  <div class="center">
+    <h1>You lose!</h1>
     <br/>
     <a href={ROUTES.HOME}>Go Home</a>
+    <img src={ninja} id="bg"/>
   </div>
 );
 
