@@ -30,4 +30,10 @@
 
 a {
   text-align: center;
+  background-color: orangered;
+  padding: 5px 10px;
+}
+
+h3 {
+  text-align: center;
 }
