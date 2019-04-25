@@ -5,6 +5,15 @@ import SignOutButton from '../SignOut';
 import { withFirebase } from '../Firebase';
 import config from '../Firebase';
 import * as firebase from 'firebase';
+/*
+import rank1 from './rank1.png';
+import rank2 from './rank2.png';
+import rank3 from './rank3.png';
+import rank4 from './rank4.png';
+import rank5 from './rank5.png';
+import gustavo from './gustavo.png';
+import './index.css';
+*/
 
 const INITIAL_STATE = {
   numWins: '',
@@ -42,22 +51,22 @@ class Stats extends Component {
       {(() => {
         var wins = this.state.userData.numWins;
           if (wins === 0) {
-
+            //return(<img src={rank1} class = "center"/>);
           }
           else if (wins > 0 && wins <= 9) {
-
+            //return(<img src={rank2} class = "center"/>);
           }
           else if (wins > 9 && wins <= 99) {
-
+            //return(<img src={rank3} class = "center"/>);
           }
           else if (wins > 99 && wins <= 999) {
-
+            //return(<img src={rank4} class = "center"/>);
           }
           else if (wins > 999 && wins <= 99999){
-
+            //return(<img src={rank5} class = "center"/>);
           }
           else {
-
+            //return(<img src={gustavo} class = "center"/>);
           }
       })()}
       <h1>Number of wins: {this.state.userData.numWins}</h1>

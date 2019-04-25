@@ -5,10 +5,10 @@ import thanos from './thanos.gif';
 import * as ROUTES from '../../constants/routes';
 
 const WinPage = () => (
-  <div class="center">
-    <img src={victoryroyale} id="vr"/>
+  <div>
+    <img src={victoryroyale} class = "center"/>
     <br/>
-    <a href={ROUTES.HOME}>Go Home</a>
+    <a href={ROUTES.HOME}  class = "center">Go Home</a>
     <img src={thanos} id="bg"/>
   </div>
 );
