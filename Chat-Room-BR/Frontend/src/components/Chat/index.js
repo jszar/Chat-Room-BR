@@ -212,6 +212,12 @@ class ChatPage extends Component {
       if (this.state.serverData.toKick === this.state.userData.name) {
         var newPlayers = this.state.serverData.players;
         newPlayers.splice(this.state.serverData.players.indexOf(this.state.userData.name), 1);
+        firebase.database().ref('users/' + user.uid).set({
+          name: this.state.userData.name,
+          email: this.state.userData.email,
+          numWins: this.state.userData.numWins,
+          numVotes: 1
+        });
         firebase.database().ref('users/' + "GAMEROOMCHAT").set({
           totalVotes: 0,
           isGame: "true",
@@ -228,7 +234,7 @@ class ChatPage extends Component {
           name: this.state.userData.name,
           email: this.state.userData.email,
           numWins: this.state.userData.numWins + 1,
-          numVotes: this.state.numVotes
+          numVotes: 1
         });
         firebase.database().ref('users/' + "GAMEROOMCHAT").set({
           totalVotes: 0,
