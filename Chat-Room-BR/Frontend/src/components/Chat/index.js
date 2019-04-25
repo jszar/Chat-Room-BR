@@ -209,6 +209,21 @@ class ChatPage extends Component {
           numVotes: 1
         });
       }
+      if (this.state.serverData.toKick === this.state.userData.name) {
+        var newPlayers = this.state.serverData.players;
+        newPlayers.splice(this.state.serverData.players.indexOf(this.state.userData.name), 1);
+        firebase.database().ref('users/' + "GAMEROOMCHAT").set({
+          totalVotes: 0,
+          isGame: "true",
+          isOpen: "false",
+          players: newPlayers,
+          hasAdded: this.state.serverData.hasAdded,
+          toKick: this.state.serverData.toKick,
+          votes: this.state.serverData.votes
+        });
+        console.log("some guy lost lmao");
+        return (<Redirect to={ROUTES.LOSE} />);
+      }
       if (this.state.serverData.players.length === 2) {
         firebase.database().ref('users/' + user.uid).set({
           name: this.state.userData.name,
@@ -227,21 +242,6 @@ class ChatPage extends Component {
         });
         console.log("winner winner chicken dinner");
         return (<Redirect to={ROUTES.WIN} />);
-      }
-      if (this.state.serverData.toKick === this.state.userData.name) {
-        var newPlayers = this.state.serverData.players;
-        newPlayers.splice(this.state.serverData.players.indexOf(this.state.userData.name), 1);
-        firebase.database().ref('users/' + "GAMEROOMCHAT").set({
-          totalVotes: 0,
-          isGame: "true",
-          isOpen: "false",
-          players: newPlayers,
-          hasAdded: this.state.serverData.hasAdded,
-          toKick: this.state.serverData.toKick,
-          votes: this.state.serverData.votes
-        });
-        console.log("some guy lost lmao");
-        return (<Redirect to={ROUTES.LOSE} />);
       }
       return (
         <div className="App">
