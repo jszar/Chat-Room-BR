@@ -169,6 +169,41 @@ class ChatPage extends Component {
         );
       }
     } else {
+      //IN THE GAAAAAAAMMMMMEEEEEEEEEEE
+      if (this.state.serverData.totalVotes === this.state.serverData.players.length - 1) {
+        var arr = this.state.serverData.players;
+        var mf = 1;
+        var m = 0;
+        var player;
+        for (var i=0; i<arr.length; i++)
+        {
+          for (var j=i; j<arr.length; j++)
+          {
+            if (arr[i] == arr[j])
+            m++;
+            if (mf<m)
+            {
+              mf=m;
+              player = arr[i];
+            }
+          }
+          m=0;
+        }
+        firebase.database().ref('users/' + "GAMEROOMCHAT").set({
+          totalVotes: 0,
+          isGame: "true",
+          isOpen: "false",
+          players: this.state.serverData.players,
+          hasAdded: this.state.serverData.hasAdded,
+          toKick: player;
+        });
+        firebase.database().ref('users/' + user.uid).set({
+          name: this.state.userData.name,
+          email: this.state.userData.email,
+          numWins: this.state.userData.numWins,
+          numVotes: 1
+        });
+      }
       if (this.state.serverData.players.length === 2) {
         firebase.database().ref('users/' + user.uid).set({
           name: this.state.userData.name,

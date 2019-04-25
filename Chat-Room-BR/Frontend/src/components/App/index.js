@@ -25,11 +25,8 @@ const App = () => (
       <Route path={ROUTES.HOME} component={HomePage} />
       <Route path={ROUTES.ACCOUNT} component={AccountPage} />
       <Route path={ROUTES.CHAT} component={ChatPage} />
-<<<<<<< HEAD
-=======
       <Route path={ROUTES.LOSE} component={LosePage} />
       <Route path={ROUTES.WIN} component={WinPage} />
->>>>>>> 31684972a709c1b4a0ae28f2bf00c0c587352bbc
     </div>
   </Router>
 );
