@@ -39,8 +39,28 @@ class Stats extends Component {
     return (
       <div>
       <h1>Ready to get some VICTORY ROYALES {this.state.userData.name}???</h1>
-      <h1>Stats</h1>
-      <p>Number of wins: {this.state.userData.numWins}</p>
+      {(() => {
+        var wins = this.state.userData.numWins;
+          if (wins === 0) {
+
+          }
+          else if (wins > 0 && wins <= 9) {
+
+          }
+          else if (wins > 9 && wins <= 99) {
+
+          }
+          else if (wins > 99 && wins <= 999) {
+
+          }
+          else if (wins > 999 && wins <= 99999){
+
+          }
+          else {
+
+          }
+      })()}
+      <h1>Number of wins: {this.state.userData.numWins}</h1>
       <a href={ROUTES.CHAT}>Play Battle Royale</a>
       <br/>
       <a href={ROUTES.ACCOUNT}>Change my settings</a>

@@ -260,6 +260,7 @@ class ChatPage extends Component {
         onSendMessage={this.onSendMessage}
         />
         {(() => {
+             if (this.state.userData.numVotes === 1) {
           return this.state.serverData.players.map((d, i) => {
             return (
               <div>
@@ -269,10 +270,21 @@ class ChatPage extends Component {
                     <button name={d} onClick={() => this.onClick(d, user.uid)}  >{"Vote " + d}</button>
                   )
                 }
+                else {
+                  return (
+                    <p>Vote for who you wanna kick!</p>
+                  )
+                }
               })()}
               </div>
             )
           })
+              }
+              else {
+                return (
+                  <p>Fight for your life until the next round!</p>
+                )
+              }
         })()}
         </div>
       );
