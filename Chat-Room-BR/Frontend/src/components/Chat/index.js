@@ -223,8 +223,7 @@ class ChatPage extends Component {
         });
         console.log("some guy lost lmao");
         return (<Redirect to={ROUTES.LOSE} />);
-      }
-      if (this.state.serverData.players.length === 2) {
+      } else if (this.state.serverData.players.length === 2) {
         firebase.database().ref('users/' + user.uid).set({
           name: this.state.userData.name,
           email: this.state.userData.email,
