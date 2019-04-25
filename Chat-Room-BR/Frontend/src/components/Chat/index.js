@@ -173,7 +173,7 @@ class ChatPage extends Component {
     } else {
       //IN THE GAAAAAAAMMMMMEEEEEEEEEEE
       if (this.state.serverData.totalVotes === this.state.serverData.players.length - 1) {
-        var arr = this.state.serverData.players;
+        var arr = this.state.serverData.votes;
         var mf = 1;
         var m = 0;
         var player;
