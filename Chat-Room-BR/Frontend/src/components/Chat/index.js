@@ -176,15 +176,14 @@ class ChatPage extends Component {
         var arr = this.state.serverData.votes;
         var mf = 1;
         var m = 0;
-        var player;
-        for (var i=0; i<arr.length; i++)
-        {
-          for (var j=i; j<arr.length; j++)
-          {
-            if (arr[i] == arr[j])
-            m++;
-            if (mf<m)
-            {
+        var randIndex = Math.floor(Math.random() * (this.state.serverData.players.length - 1));
+        var player = this.state.serverData.players[1 + randIndex];
+        for (var i=0; i<arr.length; i++) {
+          for (var j=i; j<arr.length; j++) {
+            if (arr[i] == arr[j]) {
+              m++;
+            }
+            if (mf<m) {
               mf=m;
               player = arr[i];
             }
