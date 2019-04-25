@@ -71,7 +71,7 @@
   background-color: orangered;
 }
 
-form {
+.chatform {
   display: flex;
   width: 100%;
   justify-content: space-between;

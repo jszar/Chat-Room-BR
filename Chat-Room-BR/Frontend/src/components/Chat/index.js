@@ -270,7 +270,10 @@ class ChatPage extends Component {
               {(() => {
                 if (!(d === "FillerNotUser")){
                   return (
-                    <button name={d} onClick={() => this.onClick(d, user.uid)}  >{"Vote " + d}</button>
+                    <div>
+                    <button class = "center" name={d} onClick={() => this.onClick(d, user.uid)}  >{d}</button>
+                    <br/>
+                    </div>
                   )
                 }
                 else {

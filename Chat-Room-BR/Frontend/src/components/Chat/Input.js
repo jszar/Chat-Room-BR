@@ -33,7 +33,7 @@ class Input extends Component {
     }
     return (
       <div className="Input">
-      <form onSubmit={e => this.onSubmit(e)}>
+      <form class = "chatform" onSubmit={e => this.onSubmit(e)}>
       <input
       onChange={e => this.onChange(e)}
       value={this.state.text}

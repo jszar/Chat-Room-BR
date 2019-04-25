@@ -5,11 +5,13 @@ import { PasswordForgetLink } from '../PasswordForget';
 import { SignUpLink } from '../SignUp';
 import { withFirebase } from '../Firebase';
 import * as ROUTES from '../../constants/routes';
+import './index.css';
 
 const SignInPage = () => (
   <div>
     <h1>Sign In</h1>
     <SignInForm />
+    <br/>
     <PasswordForgetLink />
     <SignUpLink />
   </div>
@@ -71,7 +73,7 @@ class SignInFormBase extends Component {
           placeholder="Password"
         />
         <br/>
-        <button disabled={isInvalid} type="submit">
+        <button disabled={isInvalid} type="submit" class = "center">
           Sign In
         </button>
 

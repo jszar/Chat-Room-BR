@@ -108,7 +108,7 @@ class SignUpFormBase extends Component {
            placeholder="Confirm Password"
          />
          <br/>
-         <button disabled={isInvalid} type="submit">Sign Up</button>
+         <button disabled={isInvalid} type="submit" class = "center">Sign Up</button>
          {error && <p>{error.message}</p>}
        </form>
      );
@@ -117,7 +117,7 @@ class SignUpFormBase extends Component {
 
 const SignUpLink = () => (
   <p>
-    Don't have an account? <Link to={ROUTES.SIGN_UP}>Sign Up</Link>
+  <Link to={ROUTES.SIGN_UP}>Sign Up</Link>
   </p>
 );
 const SignUpForm = compose(
