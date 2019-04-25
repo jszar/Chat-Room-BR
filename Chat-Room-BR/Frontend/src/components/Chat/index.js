@@ -91,7 +91,7 @@ class ChatPage extends Component {
     console.log(e);
     if (this.state.userData.numVotes > 0) {
       var newVotes = this.state.serverData.votes;
-      newVotes.push(this.state.userData.votes);
+      newVotes.push(e);
       firebase.database().ref('users/' + "GAMEROOMCHAT").set({ //add the player
         totalVotes: this.state.serverData.totalVotes + 1,
         isGame: this.state.serverData.isGame,
