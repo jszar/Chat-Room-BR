@@ -191,14 +191,16 @@ class ChatPage extends Component {
           }
           m=0;
         }
+        var newPlayers = this.state.serverData.players;
+        newPlayers.splice(this.state.serverData.players.indexOf(player), 1);
         firebase.database().ref('users/' + "GAMEROOMCHAT").set({
           totalVotes: 0,
           isGame: "true",
           isOpen: "false",
-          players: this.state.serverData.players,
+          players: newPlayers,
           hasAdded: this.state.serverData.hasAdded,
           toKick: player,
-          votes: this.state.serverData.votes
+          votes: ["FillerNotUser"]
         });
         firebase.database().ref('users/' + user.uid).set({
           name: this.state.userData.name,
