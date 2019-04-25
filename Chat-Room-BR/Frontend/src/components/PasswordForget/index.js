@@ -4,10 +4,13 @@ import { Link } from 'react-router-dom';
 import { withFirebase } from '../Firebase';
 import * as ROUTES from '../../constants/routes';
 
+import background from '../mainbackground.jpg';
+
 const PasswordForgetPage = () => (
   <div>
     <h1>Forgot Password?</h1>
     <PasswordForgetForm />
+    <img src={background} id="bg"/>
   </div>
 );
 

@@ -5,6 +5,8 @@ import { compose } from 'recompose';
 
 import * as ROUTES from '../../constants/routes';
 
+import background from '../mainbackground.jpg';
+
 const INITIAL_STATE = {
   name: '',
   email: '',
@@ -19,6 +21,7 @@ const SignUpPage = () => (
   <div>
     <h1>Sign Up</h1>
     <SignUpForm />
+    <img src={background} id="bg"/>
   </div>
 );
 

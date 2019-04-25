@@ -1,8 +1,10 @@
 import React from 'react';
 import PasswordChangeForm from '../PasswordChange';
 import { AuthUserContext, withAuthorization } from '../Session';
+import background from '../mainbackground.jpg';
 
 const AccountPage = () => (
+  <div>
   <AuthUserContext.Consumer>
       {authUser => (
         <div>
@@ -10,7 +12,9 @@ const AccountPage = () => (
           <PasswordChangeForm />
         </div>
       )}
-    </AuthUserContext.Consumer>
+  </AuthUserContext.Consumer>
+  <img src={background} id="bg"/>
+  </div>
 );
 
 const condition = authUser => !!authUser;

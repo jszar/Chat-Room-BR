@@ -6,6 +6,7 @@ import { SignUpLink } from '../SignUp';
 import { withFirebase } from '../Firebase';
 import * as ROUTES from '../../constants/routes';
 import './index.css';
+import background from '../mainbackground.jpg';
 
 const SignInPage = () => (
   <div>
@@ -14,6 +15,7 @@ const SignInPage = () => (
     <br/>
     <PasswordForgetLink />
     <SignUpLink />
+    <img src={background} id="bg"/>
   </div>
 );
 
