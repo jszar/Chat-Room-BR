@@ -19,15 +19,31 @@ const INITIAL_STATE = {
   roundsSurvived: '',
   userData: '',
   error: null,
+  serverData: ''
 };
 
 const HomePage = () => (
   <div>
-    <StatsForm/>
+  <StatsForm/>
   </div>
 );
 
 class Stats extends Component {
+  componentDidMount() {
+    this.setState({ loading: true });
+    this.props.firebase.user("GAMEROOMCHAT").on('value', snapshot => {
+      console.log(snapshot.val());
+      this.setState({
+        serverData: snapshot.val(),
+        loading: false,
+      });
+    });
+  }
+
+  componentWillUnmount() {
+    this.props.firebase.user("GAMEROOMCHAT").off();
+  }
+
   constructor(props) {
     super(props);
 
@@ -44,6 +60,12 @@ class Stats extends Component {
         });
       });
     }
+    if (!this.state.serverData) { //load server
+      return (<div>Loading Server Data...</div>);
+    }
+    if (!this.state.userData) { //load user
+      return (<div>Loading User Data...</div>);
+    }
     return (
       <div>
       <iframe frameborder="0" height="100%" width="100%"
@@ -54,27 +76,37 @@ class Stats extends Component {
       <h3>Number of wins: {this.state.userData.numWins}</h3>
       {(() => {
         var wins = this.state.userData.numWins;
-          if (wins === 0) {
-            return(<div> <img src={rank1} class = "center"/> <h3>Rank: Baby</h3> </div>);
-          }
-          else if (wins > 0 && wins <= 9) {
-            return(<div> <img src={rank2} class = "center"/> <h3>Rank: Chatter</h3> </div>);
-          }
-          else if (wins > 9 && wins <= 99) {
-            return(<div> <img src={rank3} class = "center"/> <h3>Rank: Speaker</h3> </div>);
-          }
-          else if (wins > 99 && wins <= 999) {
-            return(<div> <img src={rank4} class = "center"/> <h3>Rank: Yeller</h3> </div>);
-          }
-          else if (wins > 999 && wins <= 99999){
-            return(<div> <img src={rank5} class = "center"/> <h3>Rank: Chat Boss</h3> </div>);
-          }
-          else {
-            return(<div> <img src={gustavo} class = "center"/> <h3>Rank: Chat God</h3> </div>);
-          }
+        if (wins === 0) {
+          return(<div> <img src={rank1} class = "center"/> <h3>Rank: Baby</h3> </div>);
+        }
+        else if (wins > 0 && wins <= 9) {
+          return(<div> <img src={rank2} class = "center"/> <h3>Rank: Chatter</h3> </div>);
+        }
+        else if (wins > 9 && wins <= 99) {
+          return(<div> <img src={rank3} class = "center"/> <h3>Rank: Speaker</h3> </div>);
+        }
+        else if (wins > 99 && wins <= 999) {
+          return(<div> <img src={rank4} class = "center"/> <h3>Rank: Yeller</h3> </div>);
+        }
+        else if (wins > 999 && wins <= 99999){
+          return(<div> <img src={rank5} class = "center"/> <h3>Rank: Chat Boss</h3> </div>);
+        }
+        else {
+          return(<div> <img src={gustavo} class = "center"/> <h3>Rank: Chat God</h3> </div>);
+        }
       })()}
       <br/>
-      <a href={ROUTES.CHAT} class = "center">Play Battle Royale</a>
+      {(() => {
+          if (this.state.serverData.isGame === "false") {
+            return(
+              <a href={ROUTES.CHAT} class = "center">Play Battle Royale</a>
+            )
+          } else {
+            return(
+              <p class = "center">Game in Progress</p>
+            )
+          }
+      })()}
       <br/>
       <a href={ROUTES.ACCOUNT} class = "center">Change my settings</a>
       <br/>
