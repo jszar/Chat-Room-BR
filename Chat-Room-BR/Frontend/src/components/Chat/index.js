@@ -7,7 +7,7 @@ import config from '../Firebase';
 import * as firebase from 'firebase';
 import { Redirect } from 'react-router-dom';
 import * as ROUTES from '../../constants/routes';
-
+import map from './map.jpg';
 
 function randomName() {
   const adjectives = [
@@ -292,6 +292,7 @@ class ChatPage extends Component {
                 )
               }
         })()}
+        <img src={map} id="bg"/>
         </div>
       );
     }
