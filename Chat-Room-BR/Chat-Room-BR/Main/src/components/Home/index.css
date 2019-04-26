@@ -35,3 +35,9 @@ a {
 h3 {
   text-align: center;
 }
+
+p {
+  text-align: center;
+  background-color: orangered;
+  padding: 5px 10px;
+}

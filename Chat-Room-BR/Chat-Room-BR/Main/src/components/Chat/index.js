@@ -56,7 +56,7 @@ class ChatPage extends Component {
   componentDidMount() {
     this.setState({ loading: true });
     this.props.firebase.user("GAMEROOMCHAT").on('value', snapshot => {
-      //console.log(snapshot.val());
+      console.log(snapshot.val());
       this.setState({
         serverData: snapshot.val(),
         loading: false,
