@@ -14,6 +14,7 @@ const SignInPage = () => (
     <SignInForm />
     <br/>
     <PasswordForgetLink />
+    <br/>
     <SignUpLink />
     <img src={background} id="bg"/>
   </div>

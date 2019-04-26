@@ -159,7 +159,7 @@ class ChatPage extends Component {
     }
     //GAME SHIT
     if (this.state.serverData.isGame === "false") {
-      if (this.state.serverData.players.length >= 4) { //change to 6
+      if (this.state.serverData.players.length >= 6) { //change to 6
         firebase.database().ref('users/' + "GAMEROOMCHAT").set({
           totalVotes: this.state.serverData.totalVotes,
           isGame: "true",

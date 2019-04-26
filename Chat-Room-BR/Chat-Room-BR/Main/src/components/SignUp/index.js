@@ -119,9 +119,7 @@ class SignUpFormBase extends Component {
 }
 
 const SignUpLink = () => (
-  <p>
-  <Link to={ROUTES.SIGN_UP}>Sign Up</Link>
-  </p>
+  <Link class="center" to={ROUTES.SIGN_UP}>Sign Up</Link>
 );
 const SignUpForm = compose(
   withRouter,
